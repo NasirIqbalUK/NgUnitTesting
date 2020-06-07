@@ -62,8 +62,11 @@ describe('HerosComponent (deep tests)', () => {
             fixture.detectChanges();
 
             const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
-            heroComponents[0].query(By.css('button'))
-                .triggerEventHandler('click', {stopPropagation: () => {}});
+            /* heroComponents[0].query(By.css('button'))
+                .triggerEventHandler('click', {stopPropagation: () => {}}); */
+
+            // Alternate way of raising an event instead of actual triggering click event through DOM
+            (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined);
 
             expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
         });
