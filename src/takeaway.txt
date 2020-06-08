@@ -1,0 +1,23 @@
+    
+
+    Isolated Tests
+     - Default
+     - Prefer
+     - Not brittle 
+
+    Integration Tests
+     - When required to test templates
+     - Only When needed
+
+     - There are two types for templates testing
+        1. Shallow Integration Tests
+            - Prefer Shallow
+
+        2. Deep Integration Tests
+            - use rarely
+            - use only when you are convinced you need it
+
+
+
+
+
