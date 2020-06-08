@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick, flush, async } from '@angular/core/testing';
 import { HeroDetailComponent } from './hero-detail.component';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
@@ -38,4 +38,43 @@ describe('HeroDetailComponent', () => {
         // Assert
         expect(fixture.nativeElement.querySelector('h2').textContent).toContain('SUPERDUDE');
     });
+
+    // Option 1 for async method testing with done callback
+    /*it('should call updateHero when save is called', (done) => {
+        mockHeroService.updateHero.and.returnValue(of({}));
+        fixture.detectChanges();
+
+        fixture.componentInstance.save();
+
+        setTimeout(() => {
+        expect(mockHeroService.updateHero).toHaveBeenCalled();
+        done();
+        }, 300);
+    });*/
+
+    // Option 2 bit better for async method with fakeAsync, tick or flush methods (Zone.js rounding around execution context)
+    // Work well both Promises and timeout function
+    it('should call updateHero when save is called', fakeAsync(() => {
+        mockHeroService.updateHero.and.returnValue(of({}));
+        fixture.detectChanges();
+
+        fixture.componentInstance.save();
+        // tick(250);
+        flush();
+
+
+        expect(mockHeroService.updateHero).toHaveBeenCalled();
+    }));
+
+    // Option 3 for async method with async and whenStable. Works better with Promises but doesn't deal well settimeout function
+    /* it('should call updateHero when save is called', async(() => {
+        mockHeroService.updateHero.and.returnValue(of({}));
+        fixture.detectChanges();
+
+        fixture.componentInstance.save();
+
+        fixture.whenStable().then(() => {
+            expect(mockHeroService.updateHero).toHaveBeenCalled();
+        });
+    })); */
 });
